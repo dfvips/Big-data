@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.ccc.dao.HotTrendMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.ccc.model.HotTrend">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+    <result column="sell" jdbcType="INTEGER" property="sell" />
+    <result column="comment" jdbcType="INTEGER" property="comment" />
+    <result column="sum_sell" jdbcType="INTEGER" property="sumSell" />
+    <result column="good_num" jdbcType="INTEGER" property="goodNum" />
+    <result column="hot_rise_id" jdbcType="INTEGER" property="hotRiseId" />
+    <result column="normal_price" jdbcType="VARCHAR" property="normalPrice" />
+    <result column="group_price" jdbcType="VARCHAR" property="groupPrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, update_date, sell, comment, sum_sell, good_num, hot_rise_id, normal_price, group_price
+  </sql>
+  <select id="findByHotRiseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hottrend
+    where hot_rise_id = #{hotRiseId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hottrend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hottrend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.ccc.model.HotTrend">
+    insert into hottrend (id, update_date, sell, 
+      comment, sum_sell, good_num, 
+      hot_rise_id, normal_price, group_price
+      )
+    values (#{id,jdbcType=INTEGER}, #{updateDate,jdbcType=DATE}, #{sell,jdbcType=INTEGER}, 
+      #{comment,jdbcType=INTEGER}, #{sumSell,jdbcType=INTEGER}, #{goodNum,jdbcType=INTEGER}, 
+      #{hotRiseId,jdbcType=INTEGER}, #{normalPrice,jdbcType=VARCHAR}, #{groupPrice,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.ccc.model.HotTrend">
+    insert into hottrend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="sell != null">
+        sell,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="sumSell != null">
+        sum_sell,
+      </if>
+      <if test="goodNum != null">
+        good_num,
+      </if>
+      <if test="hotRiseId != null">
+        hot_rise_id,
+      </if>
+      <if test="normalPrice != null">
+        normal_price,
+      </if>
+      <if test="groupPrice != null">
+        group_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="sell != null">
+        #{sell,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=INTEGER},
+      </if>
+      <if test="sumSell != null">
+        #{sumSell,jdbcType=INTEGER},
+      </if>
+      <if test="goodNum != null">
+        #{goodNum,jdbcType=INTEGER},
+      </if>
+      <if test="hotRiseId != null">
+        #{hotRiseId,jdbcType=INTEGER},
+      </if>
+      <if test="normalPrice != null">
+        #{normalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="groupPrice != null">
+        #{groupPrice,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.ccc.model.HotTrend">
+    update hottrend
+    <set>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="sell != null">
+        sell = #{sell,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=INTEGER},
+      </if>
+      <if test="sumSell != null">
+        sum_sell = #{sumSell,jdbcType=INTEGER},
+      </if>
+      <if test="goodNum != null">
+        good_num = #{goodNum,jdbcType=INTEGER},
+      </if>
+      <if test="hotRiseId != null">
+        hot_rise_id = #{hotRiseId,jdbcType=INTEGER},
+      </if>
+      <if test="normalPrice != null">
+        normal_price = #{normalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="groupPrice != null">
+        group_price = #{groupPrice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.ccc.model.HotTrend">
+    update hottrend
+    set update_date = #{updateDate,jdbcType=DATE},
+      sell = #{sell,jdbcType=INTEGER},
+      comment = #{comment,jdbcType=INTEGER},
+      sum_sell = #{sumSell,jdbcType=INTEGER},
+      good_num = #{goodNum,jdbcType=INTEGER},
+      hot_rise_id = #{hotRiseId,jdbcType=INTEGER},
+      normal_price = #{normalPrice,jdbcType=VARCHAR},
+      group_price = #{groupPrice,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+		PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<!-- 去除自动生成的注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<!-- 数据库连接，②userId&password改成自己的配置，如果是oracle还需要修改目录下的tnsnames.ora -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://120.77.36.147:3306/ccc?characterEncoding=utf8"
+			userId="mybatis" password="mybatis">
+		</jdbcConnection>
+		<!-- <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:OrderTest" 
+			userId="xxx" password="xxx"> </jdbcConnection> -->
+
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+		</javaTypeResolver>
+
+		<!-- targetProject:③修改自动生成代码的位置，包括DAO/entity/XML，一般生成在项目下面的src或者test -->
+		<!-- 生成vo对象 -->
+		<javaModelGenerator targetPackage="com.zdata.yundong.model"
+			targetProject="src\main\java">
+			<property name="enableSubPackages" value="false" />
+			<!-- 从数据库返回的值清除前后空格 -->
+			<property name="trimStrings" value="true" />
+			<!-- targetProject 生成的Java Bean放置在哪个项目的哪个目录下 targetPackage 生成的Java Bean的包名 
+				一个有用的属性 <property name="trimStrings" value="true" /> 从数据库返回的值被清理前后的空格 <property 
+				name="enableSubPackages" value="false" /> 是否在包名后加上scheme名称 -->
+		</javaModelGenerator>
+		<!-- 生成用于查询的Example对象 -->
+		<sqlMapGenerator targetPackage="com.zdata.yundong.mapper"
+			targetProject="src\main\java">
+			<property name="enableSubPackages" value="false" />
+			<!-- targetProject 生成的 SqlMap.xml 文件放置在哪个项目的哪个目录下 targetPackage 生成的 SqlMap.xml 
+				文件的包名 <property name="enableSubPackages" value="false" /> 是否在包名后加上scheme名称 -->
+		</sqlMapGenerator>
+
+		<!-- 生成DAO的类文件以及配置文件 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.zdata.yundong.dao" targetProject="src\main\java">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<table tableName="grouprise" domainObjectName="GroupRise"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false" />
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.ccc.dao.HotRiseMapper">
+  <cache></cache>
+  <resultMap id="BaseResultMap" type="com.zdata.ccc.model.HotRise">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="hot_goods_id" jdbcType="INTEGER" property="hotGoodsId" />
+    <result column="visitor_num" jdbcType="INTEGER" property="visitorNum" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="rise_date" jdbcType="DATE" property="riseDate" />
+    <result column="translation" jdbcType="VARCHAR" property="translation" />
+    <result column="visitor_percent" jdbcType="VARCHAR" property="visitorPercent" />
+    <result column="order_percent" jdbcType="VARCHAR" property="orderPercent" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, goods_name, hot_goods_id, visitor_num, order_num, rise_date, translation, visitor_percent, 
+    order_percent, tag, cat_id, cat_name
+  </sql>
+  <select id="find" parameterType="com.zdata.ccc.vo.search.HotRiseSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotrise
+    where 1=1 
+    <include refid="search_sql_base"/>
+  </select>
+  <sql id="search_sql_base">
+  	<if test="catId != null and catId !=''">
+	  	and cat_id = #{catId,jdbcType=INTEGER}
+	</if>
+  	<if test="goodsName != null and goodsName !=''">
+	  	and goods_name like '%${goodsName}%'
+	</if>
+	<if test="riseDate != null and riseDate !=''">
+	  	and rise_date = #{riseDate,jdbcType=DATE}
+	</if>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotrise
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByGoodsName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotrise
+    where goods_name = #{goodsName,jdbcType=VARCHAR}
+    and rise_date = #{riseDate,jdbcType=DATE}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hotrise
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.ccc.model.HotRise">
+    insert into hotrise (id, goods_name, hot_goods_id, 
+      visitor_num, order_num, rise_date, 
+      translation, visitor_percent, order_percent, 
+      tag, cat_id, cat_name
+      )
+    values (#{id,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{hotGoodsId,jdbcType=INTEGER}, 
+      #{visitorNum,jdbcType=INTEGER}, #{orderNum,jdbcType=INTEGER}, #{riseDate,jdbcType=DATE}, 
+      #{translation,jdbcType=VARCHAR}, #{visitorPercent,jdbcType=VARCHAR}, #{orderPercent,jdbcType=VARCHAR}, 
+      #{tag,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, #{catName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.ccc.model.HotRise">
+    insert into hotrise
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="hotGoodsId != null">
+        hot_goods_id,
+      </if>
+      <if test="visitorNum != null">
+        visitor_num,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="riseDate != null">
+        rise_date,
+      </if>
+      <if test="translation != null">
+        translation,
+      </if>
+      <if test="visitorPercent != null">
+        visitor_percent,
+      </if>
+      <if test="orderPercent != null">
+        order_percent,
+      </if>
+      <if test="tag != null">
+        tag,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="catName != null">
+        cat_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="hotGoodsId != null">
+        #{hotGoodsId,jdbcType=INTEGER},
+      </if>
+      <if test="visitorNum != null">
+        #{visitorNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="riseDate != null">
+        #{riseDate,jdbcType=DATE},
+      </if>
+      <if test="translation != null">
+        #{translation,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPercent != null">
+        #{visitorPercent,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPercent != null">
+        #{orderPercent,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        #{catName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.ccc.model.HotRise">
+    update hotrise
+    <set>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="hotGoodsId != null">
+        hot_goods_id = #{hotGoodsId,jdbcType=INTEGER},
+      </if>
+      <if test="visitorNum != null">
+        visitor_num = #{visitorNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="riseDate != null">
+        rise_date = #{riseDate,jdbcType=DATE},
+      </if>
+      <if test="translation != null">
+        translation = #{translation,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPercent != null">
+        visitor_percent = #{visitorPercent,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPercent != null">
+        order_percent = #{orderPercent,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        cat_name = #{catName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.ccc.model.HotRise">
+    update hotrise
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      hot_goods_id = #{hotGoodsId,jdbcType=INTEGER},
+      visitor_num = #{visitorNum,jdbcType=INTEGER},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      rise_date = #{riseDate,jdbcType=DATE},
+      translation = #{translation,jdbcType=VARCHAR},
+      visitor_percent = #{visitorPercent,jdbcType=VARCHAR},
+      order_percent = #{orderPercent,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
+      cat_id = #{catId,jdbcType=INTEGER},
+      cat_name = #{catName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

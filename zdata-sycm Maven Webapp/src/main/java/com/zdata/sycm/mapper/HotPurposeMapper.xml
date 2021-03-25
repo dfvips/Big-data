@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.sycm.dao.HotPurposeMapper">
+  <cache></cache>
+  <resultMap id="BaseResultMap" type="com.zdata.sycm.model.HotPurpose">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="pict_url" jdbcType="VARCHAR" property="pictUrl" />
+    <result column="detail_url" jdbcType="VARCHAR" property="detailUrl" />
+    <result column="item_title" jdbcType="VARCHAR" property="itemTitle" />
+    <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+    <result column="shop_title" jdbcType="VARCHAR" property="shopTitle" />
+    <result column="shop_url" jdbcType="VARCHAR" property="shopUrl" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="trade_index" jdbcType="VARCHAR" property="tradeIndex" />
+    <result column="cate_rank" jdbcType="INTEGER" property="cateRank" />
+    <result column="cate_rank_cqc" jdbcType="INTEGER" property="cateRankCqc" />
+    <result column="clt_hits" jdbcType="VARCHAR" property="cltHits" />
+    <result column="cart_hits" jdbcType="VARCHAR" property="cartHits" />
+    <result column="update_time" jdbcType="DATE" property="updateTime" />
+    <result column="crawl_time" jdbcType="TIMESTAMP" property="crawlTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cat_id, item_id, pict_url, detail_url, item_title, picture_url, shop_title, shop_url, 
+    user_id, trade_index, cate_rank, cate_rank_cqc, clt_hits, cart_hits, update_time, 
+    crawl_time
+  </sql>
+  <select id="findByItemId" parameterType="com.zdata.sycm.vo.search.HotPurposeSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotpurpose
+    where cat_id = #{catId,jdbcType=INTEGER}
+    and item_id = #{itemId,jdbcType=VARCHAR}
+    and update_time <![CDATA[>=]]> DATE_SUB(#{updateTime,jdbcType=DATE}, INTERVAL 2 DAY) and update_time <![CDATA[<=]]> #{updateTime,jdbcType=DATE}
+  	order by update_time asc
+  </select>
+  <select id="findHot" parameterType="com.zdata.sycm.vo.search.HotPurposeSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotpurpose
+    where cat_id = #{catId,jdbcType=INTEGER}
+	and update_time = #{updateTime,jdbcType=DATE}
+	and item_id in (
+		SELECT item_id FROM hotpurpose where update_time <![CDATA[>=]]> DATE_SUB(#{updateTime,jdbcType=DATE}, INTERVAL 3 DAY) and update_time <![CDATA[<=]]> #{updateTime,jdbcType=DATE}
+		and cat_id = #{catId,jdbcType=INTEGER} GROUP BY item_id
+		HAVING (count(1)=4)
+	)
+	and item_id not in (
+		SELECT item_id FROM hotpurpose where update_time <![CDATA[<=]]> DATE_SUB(#{updateTime,jdbcType=DATE}, INTERVAL 4 DAY)
+		and cat_id = #{catId,jdbcType=INTEGER}
+	)
+  </select>
+  <select id="find" parameterType="com.zdata.sycm.vo.search.HotPurposeSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotpurpose
+    where <include refid="base_search_sql" />
+    order by update_time desc
+  </select>
+  <sql id="base_search_sql">
+  	<if test="catId != null and catId !=''">
+	  	cat_id = #{catId,jdbcType=INTEGER}
+	</if>
+	<if test="itemId != null and itemId !=''">
+	  	and item_id = #{itemId,jdbcType=VARCHAR}
+	</if>
+	<if test="itemTitle != null and itemTitle !=''">
+	  	and item_title like '%${itemTitle}%'
+	</if>
+	<if test="updateTime != null and updateTime !=''">
+	  	and update_time = #{updateTime,jdbcType=DATE}
+	</if>
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotpurpose
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hotpurpose
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.sycm.model.HotPurpose">
+    insert into hotpurpose (id, cat_id, item_id, 
+      pict_url, detail_url, item_title, 
+      picture_url, shop_title, shop_url, 
+      user_id, trade_index, cate_rank, 
+      cate_rank_cqc, clt_hits, cart_hits, 
+      update_time, crawl_time)
+    values (#{id,jdbcType=INTEGER}, #{catId,jdbcType=INTEGER}, #{itemId,jdbcType=VARCHAR}, 
+      #{pictUrl,jdbcType=VARCHAR}, #{detailUrl,jdbcType=VARCHAR}, #{itemTitle,jdbcType=VARCHAR}, 
+      #{pictureUrl,jdbcType=VARCHAR}, #{shopTitle,jdbcType=VARCHAR}, #{shopUrl,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{tradeIndex,jdbcType=VARCHAR}, #{cateRank,jdbcType=INTEGER}, 
+      #{cateRankCqc,jdbcType=INTEGER}, #{cltHits,jdbcType=VARCHAR}, #{cartHits,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=DATE}, #{crawlTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.sycm.model.HotPurpose">
+    insert into hotpurpose
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+      <if test="pictUrl != null">
+        pict_url,
+      </if>
+      <if test="detailUrl != null">
+        detail_url,
+      </if>
+      <if test="itemTitle != null">
+        item_title,
+      </if>
+      <if test="pictureUrl != null">
+        picture_url,
+      </if>
+      <if test="shopTitle != null">
+        shop_title,
+      </if>
+      <if test="shopUrl != null">
+        shop_url,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="tradeIndex != null">
+        trade_index,
+      </if>
+      <if test="cateRank != null">
+        cate_rank,
+      </if>
+      <if test="cateRankCqc != null">
+        cate_rank_cqc,
+      </if>
+      <if test="cltHits != null">
+        clt_hits,
+      </if>
+      <if test="cartHits != null">
+        cart_hits,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="crawlTime != null">
+        crawl_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="pictUrl != null">
+        #{pictUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="detailUrl != null">
+        #{detailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="itemTitle != null">
+        #{itemTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null">
+        #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shopTitle != null">
+        #{shopTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="shopUrl != null">
+        #{shopUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeIndex != null">
+        #{tradeIndex,jdbcType=VARCHAR},
+      </if>
+      <if test="cateRank != null">
+        #{cateRank,jdbcType=INTEGER},
+      </if>
+      <if test="cateRankCqc != null">
+        #{cateRankCqc,jdbcType=INTEGER},
+      </if>
+      <if test="cltHits != null">
+        #{cltHits,jdbcType=VARCHAR},
+      </if>
+      <if test="cartHits != null">
+        #{cartHits,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="crawlTime != null">
+        #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.sycm.model.HotPurpose">
+    update hotpurpose
+    <set>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=VARCHAR},
+      </if>
+      <if test="pictUrl != null">
+        pict_url = #{pictUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="detailUrl != null">
+        detail_url = #{detailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="itemTitle != null">
+        item_title = #{itemTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null">
+        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="shopTitle != null">
+        shop_title = #{shopTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="shopUrl != null">
+        shop_url = #{shopUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeIndex != null">
+        trade_index = #{tradeIndex,jdbcType=VARCHAR},
+      </if>
+      <if test="cateRank != null">
+        cate_rank = #{cateRank,jdbcType=INTEGER},
+      </if>
+      <if test="cateRankCqc != null">
+        cate_rank_cqc = #{cateRankCqc,jdbcType=INTEGER},
+      </if>
+      <if test="cltHits != null">
+        clt_hits = #{cltHits,jdbcType=VARCHAR},
+      </if>
+      <if test="cartHits != null">
+        cart_hits = #{cartHits,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="crawlTime != null">
+        crawl_time = #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.sycm.model.HotPurpose">
+    update hotpurpose
+    set cat_id = #{catId,jdbcType=INTEGER},
+      item_id = #{itemId,jdbcType=VARCHAR},
+      pict_url = #{pictUrl,jdbcType=VARCHAR},
+      detail_url = #{detailUrl,jdbcType=VARCHAR},
+      item_title = #{itemTitle,jdbcType=VARCHAR},
+      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      shop_title = #{shopTitle,jdbcType=VARCHAR},
+      shop_url = #{shopUrl,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      trade_index = #{tradeIndex,jdbcType=VARCHAR},
+      cate_rank = #{cateRank,jdbcType=INTEGER},
+      cate_rank_cqc = #{cateRankCqc,jdbcType=INTEGER},
+      clt_hits = #{cltHits,jdbcType=VARCHAR},
+      cart_hits = #{cartHits,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=DATE},
+      crawl_time = #{crawlTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.alibaba.dao.NewWordsMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.alibaba.model.NewWords">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ind" jdbcType="INTEGER" property="ind" />
+    <result column="total" jdbcType="BIGINT" property="total" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="crawl_time" jdbcType="TIMESTAMP" property="crawlTime" />
+    <result column="period" jdbcType="VARCHAR" property="period" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ind, total, keyword, url, cat_id, crawl_time, period
+  </sql>
+  <sql id="base_search_sql">
+  	<if test="catId != null and catId !=''">
+	  	and cat_id = #{catId,jdbcType=INTEGER}
+	</if>
+	<if test="keyword != null and keyword !=''">
+	  	and keyword like '%${keyword}%'
+	</if>
+	<if test="period != null and period !=''">
+	  	and period = #{period,jdbcType=VARCHAR}
+	</if>
+	<if test="crawlTime != null and crawlTime !=''">
+		and DATE_FORMAT(crawl_time, '%Y-%m-%d') = #{crawlTime}
+	</if>
+  </sql>
+  <select id="find" parameterType="com.zdata.alibaba.vo.search.NewWordsSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from newwords
+    where 1=1
+    <include refid="base_search_sql" />
+    order by ind desc
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from newwords
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from newwords
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.alibaba.model.NewWords">
+    insert into newwords (id, ind, total, 
+      keyword, url, cat_id, 
+      crawl_time, period)
+    values (#{id,jdbcType=INTEGER}, #{ind,jdbcType=INTEGER}, #{total,jdbcType=BIGINT}, 
+      #{keyword,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
+      #{crawlTime,jdbcType=TIMESTAMP}, #{period,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.alibaba.model.NewWords">
+    insert into newwords
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ind != null">
+        ind,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="keyword != null">
+        keyword,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="crawlTime != null">
+        crawl_time,
+      </if>
+      <if test="period != null">
+        period,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ind != null">
+        #{ind,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=BIGINT},
+      </if>
+      <if test="keyword != null">
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="crawlTime != null">
+        #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="period != null">
+        #{period,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.alibaba.model.NewWords">
+    update newwords
+    <set>
+      <if test="ind != null">
+        ind = #{ind,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=BIGINT},
+      </if>
+      <if test="keyword != null">
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="crawlTime != null">
+        crawl_time = #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="period != null">
+        period = #{period,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.alibaba.model.NewWords">
+    update newwords
+    set ind = #{ind,jdbcType=INTEGER},
+      total = #{total,jdbcType=BIGINT},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      cat_id = #{catId,jdbcType=INTEGER},
+      crawl_time = #{crawlTime,jdbcType=TIMESTAMP},
+      period = #{period,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

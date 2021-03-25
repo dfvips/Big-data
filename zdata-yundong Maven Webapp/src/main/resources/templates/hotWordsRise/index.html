@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="image/logo.ico" type="image/x-icon" />
+<title></title>
+<script th:src="@{/js/hotWordsRise/index.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md2">
+				<div class="layui-card">
+					<div class="layui-card-header">分类</div>
+					<div class="layui-card-body" id="cateTreeDiv" style="overflow:auto">
+						<div id="cateTree" class="ztree" style="margin-left: 15px;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md10">
+				<div class="layui-card">
+					<div class="layui-card-body" id="infoDiv">
+						<div class="layui-tab layui-tab-brief" lay-filter="content">
+						  <ul class="layui-tab-title">
+						    <li class="layui-this" lay-id="tabOne">昨天上榜</li>
+						    <li lay-id="tabTwo">历史上榜</li>
+						    <li lay-id="tabThree">收藏上榜</li>
+						    <li lay-id="tabFour">蓝海热词</li>
+						  </ul>
+						  <div class="layui-tab-content">
+						  	<div class="layui-tab-item layui-show">
+						  		<div class="searchInfo" style="padding:10px 0px 0px 0px;">
+									<form action="" id="searchInfo">
+										关键词：
+										<div class="layui-inline">
+											<input class="layui-input" name="word" id="word"
+												autocomplete="off">
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+						  		<table class="layui-hide" id="hotList" lay-filter="hotTable"
+									style="width: 100%;"></table>
+								<script type="text/html" id="hotToolbar">
+									<button class="layui-btn layui-btn-sm" lay-event="collent">收藏</button>
+									<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里查询</button>
+									<button class="layui-btn layui-btn-sm" lay-event="tbSearch">淘宝查询</button>
+									<button class="layui-btn layui-btn-sm" lay-event="tmSearch">天猫查询</button>
+									<button class="layui-btn layui-btn-sm" lay-event="pddSearch">拼多多批发</button>
+								</script>
+						  	</div>
+						    <div class="layui-tab-item">
+						    	<div class="search" style="padding:10px 0px 0px 0px;">
+									<form action="" id="search">
+										关键词：
+										<div class="layui-inline">
+											<input class="layui-input" name="word" id="word"
+												autocomplete="off">
+										</div>
+										时间：
+										<div class="layui-inline">
+											<input class="layui-input" name="riseDate" id="riseDate"
+												autocomplete="off">
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+						    	<table class="layui-hide" id="tableHistory"
+										lay-filter="hotTableHistory" style="width: 100%;"></table>
+								<script type="text/html" id="historyToolbar">
+									<button class="layui-btn layui-btn-sm" lay-event="collent">收藏</button>
+									<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里查询</button>
+									<button class="layui-btn layui-btn-sm" lay-event="tbSearch">淘宝查询</button>
+									<button class="layui-btn layui-btn-sm" lay-event="tmSearch">天猫查询</button>
+									<button class="layui-btn layui-btn-sm" lay-event="pddSearch">拼多多批发</button>
+								</script>
+						    </div>
+						    <div class="layui-tab-item">
+								<table class="layui-hide" id="collectList"
+										lay-filter="collectTable" style="width: 100%;"></table>
+								<script type="text/html" id="collectToolbar">
+									<button class="layui-btn layui-btn-sm" lay-event="cancel">取消收藏</button>
+								</script>
+							</div>
+							<div class="layui-tab-item">
+								<table class="layui-hide" id="youngList"
+										lay-filter="youngTable" style="width: 100%;"></table>
+								<script type="text/html" id="youngToolbar">
+									<button class="layui-btn layui-btn-sm" lay-event="tag">标记为常量词</button>
+								</script>
+							</div>
+						  </div>
+						</div> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

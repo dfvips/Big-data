@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/hotTrend/info.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-card">
+			<div class="layui-card-body" style="overflow:auto">
+				<table class="layui-hide" id="trendList" lay-filter="trendTable"
+					style="width: 100%;"></table>
+				<script type="text/html" id="trendToolbar">
+				</script>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.yundong.dao.TrendMapper">
+  <cache></cache>
+  <resultMap id="BaseResultMap" type="com.zdata.yundong.model.Trend">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="visitor_num" jdbcType="INTEGER" property="visitorNum" />
+    <result column="search_num" jdbcType="INTEGER" property="searchNum" />
+    <result column="click_num" jdbcType="INTEGER" property="clickNum" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, visitor_num, search_num, click_num, update_date, cat_id, cat_name
+  </sql>
+  <select id="findByCatId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from trend
+    where cat_id = #{catId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByDate" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trend
+    where update_date = #{updateDate,jdbcType=DATE}
+    and cat_id = #{catId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.yundong.model.Trend">
+    insert into trend (id, visitor_num, search_num, 
+      click_num, update_date, cat_id, 
+      cat_name)
+    values (#{id,jdbcType=INTEGER}, #{visitorNum,jdbcType=INTEGER}, #{searchNum,jdbcType=INTEGER}, 
+      #{clickNum,jdbcType=INTEGER}, #{updateDate,jdbcType=DATE}, #{catId,jdbcType=INTEGER}, 
+      #{catName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.yundong.model.Trend">
+    insert into trend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="visitorNum != null">
+        visitor_num,
+      </if>
+      <if test="searchNum != null">
+        search_num,
+      </if>
+      <if test="clickNum != null">
+        click_num,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="catName != null">
+        cat_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="visitorNum != null">
+        #{visitorNum,jdbcType=INTEGER},
+      </if>
+      <if test="searchNum != null">
+        #{searchNum,jdbcType=INTEGER},
+      </if>
+      <if test="clickNum != null">
+        #{clickNum,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        #{catName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.yundong.model.Trend">
+    update trend
+    <set>
+      <if test="visitorNum != null">
+        visitor_num = #{visitorNum,jdbcType=INTEGER},
+      </if>
+      <if test="searchNum != null">
+        search_num = #{searchNum,jdbcType=INTEGER},
+      </if>
+      <if test="clickNum != null">
+        click_num = #{clickNum,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=DATE},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        cat_name = #{catName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.yundong.model.Trend">
+    update trend
+    set visitor_num = #{visitorNum,jdbcType=INTEGER},
+      search_num = #{searchNum,jdbcType=INTEGER},
+      click_num = #{clickNum,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=DATE},
+      cat_id = #{catId,jdbcType=INTEGER},
+      cat_name = #{catName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

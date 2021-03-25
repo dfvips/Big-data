@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.ccc.dao.HotWordsCollectMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.ccc.model.HotWordsCollect">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="word_rise_id" jdbcType="INTEGER" property="wordRiseId" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="collect_date_time" jdbcType="TIMESTAMP" property="collectDateTime" />
+    <association property="hotWordsRise" javaType="com.zdata.ccc.model.HotWordsRise">
+    	<id column="id" jdbcType="INTEGER" property="id" />
+	    <result column="word" jdbcType="VARCHAR" property="word" />
+	    <result column="hot_words_id" jdbcType="INTEGER" property="hotWordsId" />
+	    <result column="pv" jdbcType="INTEGER" property="pv" />
+	    <result column="click_num" jdbcType="INTEGER" property="clickNum" />
+	    <result column="ctr" jdbcType="VARCHAR" property="ctr" />
+	    <result column="cvr" jdbcType="VARCHAR" property="cvr" />
+	    <result column="compete_value" jdbcType="INTEGER" property="competeValue" />
+	    <result column="impr_avg_bid" jdbcType="VARCHAR" property="imprAvgBid" />
+	    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+	    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+	    <result column="rise_date" jdbcType="DATE" property="riseDate" />
+	    <result column="pv_percent" jdbcType="VARCHAR" property="pvPercent" />
+	    <result column="click_num_percent" jdbcType="VARCHAR" property="clickNumPercent" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, word_rise_id, state, collect_date_time
+  </sql>
+  <select id="findPage" parameterType="com.zdata.ccc.model.HotWordsCollect" resultMap="BaseResultMap">
+  	select hwc.*,hwr.*
+    from hotwordscollect as hwc
+    left join hotwordsrise as hwr on hwc.word_rise_id = hwr.id
+    where 1=1 
+    <include refid="page_search_sql"/>
+  </select>
+  <sql id="page_search_sql">
+  	<if test="state != null and state !=''">
+  		and hwc.state = #{state,jdbcType=INTEGER}
+  	</if>
+  </sql>
+  <select id="selectByWordRiseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotwordscollect
+    where word_rise_id = #{wordRiseId,jdbcType=INTEGER}  
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotwordscollect
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hotwordscollect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.ccc.model.HotWordsCollect">
+    insert into hotwordscollect (id, word_rise_id, state, 
+      collect_date_time)
+    values (#{id,jdbcType=INTEGER}, #{wordRiseId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{collectDateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.ccc.model.HotWordsCollect">
+    insert into hotwordscollect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="wordRiseId != null">
+        word_rise_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="collectDateTime != null">
+        collect_date_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wordRiseId != null">
+        #{wordRiseId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="collectDateTime != null">
+        #{collectDateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.ccc.model.HotWordsCollect">
+    update hotwordscollect
+    <set>
+      <if test="wordRiseId != null">
+        word_rise_id = #{wordRiseId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="collectDateTime != null">
+        collect_date_time = #{collectDateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.ccc.model.HotWordsCollect">
+    update hotwordscollect
+    set word_rise_id = #{wordRiseId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      collect_date_time = #{collectDateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

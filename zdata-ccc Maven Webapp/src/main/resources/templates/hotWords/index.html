@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/hotWords/index.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md2">
+				<div class="layui-card">
+					<div class="layui-card-header">分类</div>
+					<div class="layui-card-body" id="cateTreeDiv" style="overflow:auto">
+						<div id="cateTree" class="ztree" style="margin-left: 15px;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md10">
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<div class="layui-row">
+							<div class="layui-col-md6">
+								<div id="main" style="width: 98%;height:400px;"></div>
+							</div>
+							<div class="layui-col-md6">
+							</div>
+						</div>
+						<div class="layui-row">
+							<div class="search">
+								<form action="" id="search">
+									关键词：
+									<div class="layui-inline">
+										<input class="layui-input" name="word" id="word"
+											autocomplete="off">
+									</div>
+									时间：
+									<div class="layui-inline">
+										<input class="layui-input" name="updateDate" id="updateDate"
+											autocomplete="off">
+									</div>
+									<button class="layui-btn" data-type="reload" type="button">搜索</button>
+								</form>
+							</div>
+							<table class="layui-hide" id="wordList" lay-filter="wordTable"></table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

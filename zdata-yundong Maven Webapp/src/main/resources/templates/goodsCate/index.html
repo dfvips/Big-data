@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="image/logo.ico" type="image/x-icon" />
+<title></title>
+<script th:src="@{/js/goodsCate/index.js}"></script>
+</head>
+  <body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md2">
+				<div class="layui-card">
+					<div class="layui-card-header">分类</div>
+					<div class="layui-card-body" id="cateTreeDiv" style="overflow:auto">
+						<div id="cateTree" class="ztree" style="margin-left: 15px;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md10">
+				<div class="layui-row">
+					<div class="layui-col-md12">
+						<div class="layui-card">
+							<div class="layui-card-body" id="resultDiv"
+								style="overflow: auto;">
+								<div class="layui-tab layui-tab-brief" lay-filter="content">
+									<ul class="layui-tab-title">
+										<li class="layui-this" lay-id="contentOne">大盘信息</li>
+										<li lay-id="contentTwo">热销排行榜</li>
+										<li lay-id="contentThree">行业趋势图</li>
+										<li lay-id="contentFour">拼团飙升榜</li>
+										<li lay-id="contentFive">排名幅度</li>
+									</ul>
+									<div class="layui-tab-content">
+										<div class="layui-tab-item layui-show">
+											<div class="layui-row">
+												<div class="layui-col-md6">
+													<div id="main" style="width: 98%;height:380px;"></div>
+												</div>
+												<div class="layui-col-md6">
+													<div id="main2" style="width: 98%;height:380px;"></div>
+												</div>
+											</div>
+											<div class="layui-row">
+												<div class="layui-col-md12">
+													<div class="search">
+														<form action="" id="search">
+															名称：
+															<div class="layui-inline">
+																<input class="layui-input" name="goodsName"
+																	autocomplete="off">
+															</div>
+															时间：
+															<div class="layui-inline">
+																<input class="layui-input" name="updateDate"
+																	id="updateDate" autocomplete="off">
+															</div>
+															<button class="layui-btn" data-type="reload"
+																type="button">搜索</button>
+														</form>
+													</div>
+													<table class="layui-hide" id="hotList"
+														lay-filter="hotTable" style="width: 89%;"></table>
+												</div>
+											</div>
+										</div>
+										<div class="layui-tab-item">
+											<div class="layui-bg-gray"
+												style="padding:10px 10px 10px 10px;">
+												<div class="layui-row">
+													<div class="layui-col-md12">
+														<div class="layui-card">
+															<div class="layui-card-body" style="overflow:auto">
+																<div class="layui-tab" lay-filter="hotTrend">
+																	<ul class="layui-tab-title">
+																		<li class="layui-this">在榜三天（新产品）</li>
+																		<li>在榜三天（历史产品）</li>
+																		<li>历史上榜</li>
+																		<li>历史收藏</li>
+																	</ul>
+																	<div class="layui-tab-content">
+																		<div class="layui-tab-item layui-show">
+																			<table class="layui-hide" id="threeDayList"
+																				lay-filter="threeDayTable"></table>
+																			<script type="text/html" id="threeDayToolbar">
+																	 			<button class="layui-btn layui-btn-sm" lay-event="collent">收藏</button>
+																			</script>
+																		</div>
+																		<div class="layui-tab-item">
+																			<div class="threeHotSearch" style="margin-top: 10px;">
+																				<form action="" id="threeHotSearch">
+																					时间：
+																					<div class="layui-inline">
+																						<input class="layui-input" name="updateDate"
+																							id="updateDateThree" autocomplete="off">
+																					</div>
+																					<button class="layui-btn" data-type="reload"
+																						type="button">搜索</button>
+																				</form>
+																			</div>
+																			<table class="layui-hide" id="threeHotList"
+																				lay-filter="threeHotTable"></table>
+																		</div>
+																		<div class="layui-tab-item">
+																			<div class="layui-card">
+																				<div class="layui-card-header"
+																					style="display: flex;align-items: center;">
+																					(&nbsp;上榜天数颜色指标： <span
+																						style="background: rgba(150,222,232);width: 30px;height: 15px;margin-right: 6px;margin-left: 6px;"></span><span
+																						style="margin-right: 6px;">&lt;3</span> <span
+																						style="background: rgba(63,177,227,.6);width: 30px!important;height: 15px;margin-right: 6px"></span><span
+																						style="margin-right: 6px;">&lt;6</span> <span
+																						style="background: rgba(63,177,227);width: 30px;height: 15px;margin-right: 6px"></span><span
+																						style="margin-right: 6px;">&lt;9</span> <span
+																						style="background: rgba(60, 160, 190);width: 30px;height: 15px;margin-right: 6px"></span><span
+																						style="margin-right: 6px;">&gt;10</span> )
+																				</div>
+																				<div class="layui-card-body" style="overflow:auto">
+																					<div class="historySearch">
+																						<form action="" id="historySearch">
+																							名称：
+																							<div class="layui-inline">
+																								<input class="layui-input" name="goodsName"
+																									autocomplete="off">
+																							</div>
+																							时间：
+																							<div class="layui-inline">
+																								<input class="layui-input" name="riseDate"
+																									id="riseDate" autocomplete="off">
+																							</div>
+																							<button class="layui-btn" data-type="reload"
+																								type="button">搜索</button>
+																							<button class="layui-btn" data-type="trend"
+																								type="button">搜索趋势</button>
+																						</form>
+																					</div>
+																					<div id="historyDiv">
+																						<table class="layui-hide" id="historyList"
+																							lay-filter="historyTable"></table>
+																						<script type="text/html" id="historyToolbar">
+																							<button class="layui-btn layui-btn-sm" lay-event="collent">收藏</button>
+																						</script>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="layui-tab-item">
+																			<table class="layui-hide" id="collect"
+																				lay-filter="collectTable"></table>
+																			<script type="text/html" id="collectToolbar">
+																	 			<button class="layui-btn layui-btn-sm" lay-event="cancel">取消收藏</button>
+																	 			<button class="layui-btn layui-btn-sm" lay-event="edit">补充信息</button>
+																	 			<button class="layui-btn layui-btn-sm" lay-event="trend">数据监控</button>
+																			</script>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="layui-tab-item">
+												<div class="layui-card">
+													<div class="layui-card-body" style="overflow:auto">
+														<div class="layui-row">
+															<div class="layui-col-md12">
+																<div id="mainn1" style="width: 98%;height:380px;"></div>
+															</div>
+														</div>
+														<div class="layui-row">
+															<div class="layui-col-md12">
+																<div id="mainn2" style="width: 98%;height:380px;"></div>
+															</div>
+														</div>
+														<div class="layui-row">
+															<div class="layui-col-md12">
+																<div id="mainn3" style="width: 98%;height:380px;"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="layui-tab-item">
+												<div class="groupRiseSearch" style="margin-top: 10px;">
+													<form action="" id="groupRiseSearch">
+														名称：
+														<div class="layui-inline">
+															<input class="layui-input" name="goodsName"
+																autocomplete="off">
+														</div>
+														时间：
+														<div class="layui-inline">
+															<input class="layui-input" name="riseDate"
+																id="groupRiseDate" autocomplete="off">
+														</div>
+														<button class="layui-btn" data-type="reload" type="button">搜索</button>
+														<button class="layui-btn" data-type="trend" type="button">搜索趋势</button>
+													</form>
+												</div>
+												<table class="layui-hide" id="groupRiseList"
+													lay-filter="groupRiseTable" style="width: 100%;"></table>
+												<script type="text/html" id="isTagTmp">
+													<input type="checkbox"  name="isTag"  value={{d.isTag}} lay-skin="switch" lay-text="已标记|未标记"  mid={{d.id}}  lay-filter="isTag" {{ d.isTag == 1 ? 'checked' : '' }}>
+												</script>
+												<script type="text/html" id="groupRiseToolbar">
+													<button class="layui-btn layui-btn-sm" lay-event="setUrl">补充信息</button>											
+												</script>
+											</div>
+											<div class="layui-tab-item">
+												<div class="processSearch" style="margin-top: 10px;">
+													<form action="" id="processSearch">
+														时间：
+														<div class="layui-inline">
+															<input class="layui-input" name="updateDate"
+																id="processUpdateDate" autocomplete="off">
+														</div>
+														<button class="layui-btn" data-type="reload" type="button">搜索</button>
+													</form>
+												</div>
+												<table class="layui-hide" id="processList"
+													lay-filter="processTable" style="width: 100%;"></table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

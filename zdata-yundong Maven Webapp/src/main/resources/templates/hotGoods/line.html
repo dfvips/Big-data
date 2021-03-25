@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="image/logo.ico" type="image/x-icon" />
+<title></title>
+<script th:src="@{/js/hotGoods/line.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-card">
+			<div class="layui-card-body"
+				style="overflow:auto;padding:10px 10px 10px 10px;">
+				<div class="layui-row layui-col-space10" id="line">
+				</div>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>

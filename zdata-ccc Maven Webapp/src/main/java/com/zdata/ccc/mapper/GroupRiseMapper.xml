@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.ccc.dao.GroupRiseMapper">
+  <cache></cache>
+  <resultMap id="BaseResultMap" type="com.zdata.ccc.model.GroupRise">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="rise_date" jdbcType="DATE" property="riseDate" />
+    <result column="good_url" jdbcType="VARCHAR" property="goodUrl" />
+    <result column="is_tag" jdbcType="INTEGER" property="isTag" />
+    <association property="groupSurge" javaType="com.zdata.ccc.model.GroupSurge">
+    	<result column="cat_id" jdbcType="INTEGER" property="catId" />
+	    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+	    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+	    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+	    <result column="visitor_num" jdbcType="INTEGER" property="visitorNum" />
+	    <result column="incr_percent" jdbcType="VARCHAR" property="incrPercent" />
+	    <result column="update_date" jdbcType="DATE" property="updateDate" />
+	    <result column="type" jdbcType="INTEGER" property="type" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, group_id, rise_date, good_url, is_tag
+  </sql>
+  <sql id="base_search_sql">
+  	<if test="catId != null and catId !=''">
+	  	and gs.cat_id = #{catId,jdbcType=INTEGER}
+	</if>
+  	<if test="goodsName != null and goodsName !=''">
+	  	and gs.goods_name like '%${goodsName}%'
+	</if>
+	<if test="riseDate != null and riseDate !=''">
+		<![CDATA[   and DATE_FORMAT(gr.rise_date, '%Y-%m-%d') = DATE_FORMAT(#{riseDate}, '%Y-%m-%d')   ]]>
+	</if>
+  </sql>
+  <select id="find" parameterType="com.zdata.ccc.vo.search.GroupRiseSearchVo" resultMap="BaseResultMap">
+  	select 
+    gr.*,gs.*
+    from grouprise gr
+    left join groupsurge gs on gr.group_id=gs.id
+    where 1=1 
+    <include refid="base_search_sql"/>
+    and gs.visitor_num >= 500
+    order by gs.visitor_num desc
+  </select>
+  <select id="selectByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+   select 
+    <include refid="Base_Column_List" />
+    from grouprise
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from grouprise
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from grouprise
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.ccc.model.GroupRise">
+    insert into grouprise (id, group_id, rise_date, good_url, is_tag
+      )
+    values (#{id,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{riseDate,jdbcType=DATE},
+    #{goodUrl,jdbcType=VARCHAR}, #{isTag,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.ccc.model.GroupRise">
+    insert into grouprise
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="riseDate != null">
+        rise_date,
+      </if>
+      <if test="goodUrl != null">
+        good_url,
+      </if>
+      <if test="isTag != null">
+        is_tag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="riseDate != null">
+        #{riseDate,jdbcType=DATE},
+      </if>
+      <if test="goodUrl != null">
+        #{goodUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isTag != null">
+        #{isTag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.ccc.model.GroupRise">
+    update grouprise
+    <set>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="riseDate != null">
+        rise_date = #{riseDate,jdbcType=DATE},
+      </if>
+      <if test="goodUrl != null">
+        good_url = #{goodUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isTag != null">
+        is_tag = #{isTag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.ccc.model.GroupRise">
+    update grouprise
+    set group_id = #{groupId,jdbcType=INTEGER},
+      rise_date = #{riseDate,jdbcType=DATE},
+      good_url = #{goodUrl,jdbcType=DATE},
+      is_tag = #{isTag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

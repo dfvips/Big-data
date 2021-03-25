@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.ccc.dao.GoodsCateMapper">
+  <cache></cache>
+  <resultMap id="BaseResultMap" type="com.zdata.ccc.model.GoodsCate">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="parent_cat_id" jdbcType="INTEGER" property="parentCatId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cat_id, cat_name, level, parent_cat_id
+  </sql>
+  <select id="find" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from goodscate
+    where level = 3
+  </select>
+  <select id="findByPiId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from goodscate
+    where parent_cat_id = #{piId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goodscate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goodscate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.ccc.model.GoodsCate">
+    insert into goodscate (id, cat_id, cat_name, 
+      level, parent_cat_id)
+    values (#{id,jdbcType=INTEGER}, #{catId,jdbcType=INTEGER}, #{catName,jdbcType=VARCHAR}, 
+      #{level,jdbcType=INTEGER}, #{parentCatId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.ccc.model.GoodsCate">
+    insert into goodscate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="catName != null">
+        cat_name,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="parentCatId != null">
+        parent_cat_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentCatId != null">
+        #{parentCatId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.ccc.model.GoodsCate">
+    update goodscate
+    <set>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        cat_name = #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="parentCatId != null">
+        parent_cat_id = #{parentCatId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.ccc.model.GoodsCate">
+    update goodscate
+    set cat_id = #{catId,jdbcType=INTEGER},
+      cat_name = #{catName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      parent_cat_id = #{parentCatId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

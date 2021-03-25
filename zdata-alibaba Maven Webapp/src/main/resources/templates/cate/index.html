@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/cate/index.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md2">
+				<div class="layui-card">
+					<div class="layui-card-header">分类</div>
+					<div class="layui-card-body" id="cateTreeDiv" style="overflow:auto">
+						<div id="cateTree" class="ztree" style="margin-left: 15px;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md10">
+				<div class="layui-card">
+					<div class="layui-card-header">数据</div>
+					<div class="layui-card-body" style="overflow:auto">
+						<div class="layui-tab layui-tab-card" lay-filter="content">
+						  <ul class="layui-tab-title">
+						    <li class="layui-this">产品数据查询</li>
+						    <li>产品查询（筛选）</li>
+						    <li>新词数据查询</li>
+						    <li>热词数据查询</li>
+						    <li>转化率数据查询</li>
+						  </ul>
+						  <div class="layui-tab-content">
+						    <div class="layui-tab-item layui-show" style="padding:10px 10px 10px 10px;">
+						    	<div class="searchHotRank">
+									<form action="" id="hotRankForm" class="layui-form">
+										名称：
+										<div class="layui-inline">
+											<input class="layui-input" name="title"
+												 autocomplete="off">
+										</div>
+										宝贝Id：
+										<div class="layui-inline">
+											<input class="layui-input" name="offerId"
+												 autocomplete="off">
+										</div>
+										时间：
+										<div class="layui-inline">
+											<input class="layui-input" name="crawlTime"
+												id="crawlTime" autocomplete="off">
+										</div>
+										统计周期:
+										<div class="layui-inline">
+											<select name="period" lay-verify="required">
+										        <option value=""></option>
+										        <option value="week">最近7天</option>
+										        <option value="month">最近30天</option>
+									        </select>
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+								<table class="layui-hide" id="hotRankList"
+									lay-filter="hotRankTable" style="width: 100%;"></table>
+								<script type="text/html" id="hotRankToolbar">
+								</script>
+						    </div>
+						    <div class="layui-tab-item" style="padding:10px 10px 10px 10px;">
+						    	<div class="searchHotRise">
+									<form action="" id="hotRiseForm" class="layui-form">
+										名称：
+										<div class="layui-inline">
+											<input class="layui-input" name="title"
+												 autocomplete="off">
+										</div>
+										时间：
+										<div class="layui-inline">
+											<input class="layui-input" name="riseDate"
+												id="riseDate" autocomplete="off">
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+						    	<table class="layui-hide" id="hotRiseList"
+									lay-filter="hotRiseTable" style="width: 100%;"></table>
+						    	<script type="text/html" id="hotRiseToolbar">
+								</script>
+						    </div>
+						  	<div class="layui-tab-item" style="padding:10px 10px 10px 10px;">
+						  		<div class="searchNewWords">
+									<form action="" id="newWordsForm" class="layui-form">
+										名称：
+										<div class="layui-inline">
+											<input class="layui-input" name="keyword"
+												 autocomplete="off">
+										</div>
+										时间：
+										<div class="layui-inline">
+											<input class="layui-input" name="crawlTime"
+												id="newsCrawlTime" autocomplete="off">
+										</div>
+										统计周期:
+										<div class="layui-inline">
+											<select name="period" lay-verify="required">
+										        <option value=""></option>
+										        <option value="week">最近7天</option>
+										        <option value="month">最近30天</option>
+									        </select>
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+						  		<table class="layui-hide" id="newWordsList"
+									lay-filter="newWordsTable" style="width: 100%;"></table>
+								<script type="text/html" id="newWordsToolbar">
+								</script>
+						  	</div>
+						  	<div class="layui-tab-item" style="padding:10px 10px 10px 10px;">
+						  		<div class="searchHotWords">
+									<form action="" id="hotWordsForm" class="layui-form">
+										名称：
+										<div class="layui-inline">
+											<input class="layui-input" name="keyword"
+												 autocomplete="off">
+										</div>
+										统计周期:
+										<div class="layui-inline">
+											<select name="period" lay-verify="required">
+										        <option value=""></option>
+										        <option value="week">最近7天</option>
+										        <option value="month">最近30天</option>
+									        </select>
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+						  		<table class="layui-hide" id="hotWordsList"
+									lay-filter="hotWordsTable" style="width: 100%;"></table>
+								<script type="text/html" id="hotWordsToolbar">
+								</script>
+						  	</div>
+						  	<div class="layui-tab-item" style="padding:10px 10px 10px 10px;">
+						  		<div class="searchRateWords">
+									<form action="" id="rateWordsForm" class="layui-form">
+										名称：
+										<div class="layui-inline">
+											<input class="layui-input" name="keyword"
+												 autocomplete="off">
+										</div>
+										统计周期:
+										<div class="layui-inline">
+											<select name="period" lay-verify="required">
+										        <option value=""></option>
+										        <option value="week">最近7天</option>
+										        <option value="month">最近30天</option>
+									        </select>
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+						  		<table class="layui-hide" id="rateWordsList"
+									lay-filter="rateWordsTable" style="width: 100%;"></table>
+						  	</div>
+						  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

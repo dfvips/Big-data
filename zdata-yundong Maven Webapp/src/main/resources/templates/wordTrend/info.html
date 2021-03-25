@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="image/logo.ico" type="image/x-icon" />
+<title></title>
+<script th:src="@{/js/wordTrend/info.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-card">
+				<div class="layui-card-body" style="overflow:auto">
+					<table class="layui-hide" id="table" lay-filter="hotTable"
+						style="width: 100%;"></table>
+					<script type="text/html" id="Toolbar">
+						</script>
+				</div>
+			</div>
+		</div>
+		<div class="layui-row layui-col-space10">
+			<div class="layui-card">
+				<div class="layui-card-body" id="infoDiv">
+					<div class="layui-tab layui-tab-brief" lay-filter="content">
+						<ul class="layui-tab-title">
+							<li class="layui-this" lay-id="tabOne">搜索热度</li>
+							<li lay-id="tabTwo">点击指数</li>
+							<li lay-id="tabThree">竞争指数</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<div id="main" style="width: 98%;height:300px;margin-top: 20px;"></div>
+							</div>
+							<div class="layui-tab-item">
+								<div id="main2" style="width: 98%;height:300px;margin-top: 20px;"></div>
+							</div>
+							<div class="layui-tab-item">
+								<div id="main3" style="width: 98%;height:300px;margin-top: 20px;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

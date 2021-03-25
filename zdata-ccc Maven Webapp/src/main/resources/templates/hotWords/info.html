@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/hotWords/info.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-card">
+				<div class="layui-card-body" style="overflow:auto">
+					<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+						<ul class="layui-tab-title">
+							<li class="layui-this">表格数据</li>
+							<li>相似数据</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<table class="layui-hide" id="table" lay-filter="hotTable"></table>
+								<script type="text/html" id="Toolbar">
+								</script>
+								<div class="layui-row">
+									<div class="layui-col-md4">
+										<div id="main" style="width: 98%;height:300px;"></div>
+									</div>
+									<div class="layui-col-md4">
+										<div id="main2" style="width: 98%;height:300px;"></div>
+									</div>
+									<div class="layui-col-md4">
+										<div id="main3" style="width: 98%;height:300px;"></div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-tab-item">
+								<div class="search" style="padding:10px 0px 0px 0px;">
+									<form action="" id="search">
+										时间：
+										<div class="layui-inline">
+											<input class="layui-input" name="updateDate" id="updateDate"
+												autocomplete="off">
+										</div>
+										<button class="layui-btn" data-type="reload" type="button">搜索</button>
+									</form>
+								</div>
+								<table class="layui-hide" id="sameList" lay-filter="sameTable"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

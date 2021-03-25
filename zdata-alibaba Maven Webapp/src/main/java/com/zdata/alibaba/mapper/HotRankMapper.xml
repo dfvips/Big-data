@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.alibaba.dao.HotRankMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.alibaba.model.HotRank">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="trade" jdbcType="INTEGER" property="trade" />
+    <result column="flow" jdbcType="INTEGER" property="flow" />
+    <result column="ratio" jdbcType="DECIMAL" property="ratio" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="same_good_url" jdbcType="VARCHAR" property="sameGoodUrl" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="com_name" jdbcType="VARCHAR" property="comName" />
+    <result column="com_url" jdbcType="VARCHAR" property="comUrl" />
+    <result column="offer_id" jdbcType="BIGINT" property="offerId" />
+    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+    <result column="dim" jdbcType="VARCHAR" property="dim" />
+    <result column="period" jdbcType="VARCHAR" property="period" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="crawl_time" jdbcType="TIMESTAMP" property="crawlTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, trade, flow, ratio, count, price, same_good_url, title, com_name, com_url, offer_id, 
+    img_url, dim, period, cat_id, crawl_time
+  </sql>
+  <sql id="base_search_sql">
+  	<if test="catId != null and catId !=''">
+	  	and cat_id = #{catId,jdbcType=INTEGER}
+	</if>
+	<if test="title != null and title !=''">
+	  	and title like '%${title}%'
+	</if>
+	<if test="period != null and period !=''">
+	  	and period = #{period,jdbcType=VARCHAR}
+	</if>
+	<if test="crawlTime != null and crawlTime !=''">
+		and DATE_FORMAT(crawl_time, '%Y-%m-%d') = #{crawlTime}
+	</if>
+	<if test="offerId != null and offerId !=''">
+	  	and offer_id = #{offerId,jdbcType=VARCHAR}
+	</if>
+  </sql>
+  <select id="findByOfferId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotrank 
+    where offer_id = #{offerId,jdbcType=BIGINT}
+    and cat_id = #{catId,jdbcType=INTEGER}
+    and period = 'week'
+    and count is null
+  </select>
+  <select id="findByCrawlTime" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotrank
+    where DATE_FORMAT(crawl_time, '%Y-%m-%d') = #{crawlTime}
+    and period = 'week'
+	and count is null
+    and offer_id not in (
+    	select offer_id from hotrank where 
+    	<![CDATA[ DATE_FORMAT(crawl_time, '%Y-%m-%d') <  DATE_FORMAT(#{crawlTime}, '%Y-%m-%d')   ]]>
+    )
+    ORDER BY trade desc
+  </select>
+  <select id="find" parameterType="com.zdata.alibaba.vo.search.HotRankSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotrank
+    where 1=1
+    <include refid="base_search_sql" />
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotrank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hotrank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.alibaba.model.HotRank">
+    insert into hotrank (id, trade, flow, 
+      ratio, count, price, 
+      same_good_url, title, com_name, 
+      com_url, offer_id, img_url, 
+      dim, period, cat_id, 
+      crawl_time)
+    values (#{id,jdbcType=INTEGER}, #{trade,jdbcType=INTEGER}, #{flow,jdbcType=INTEGER}, 
+      #{ratio,jdbcType=DECIMAL}, #{count,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{sameGoodUrl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{comName,jdbcType=VARCHAR}, 
+      #{comUrl,jdbcType=VARCHAR}, #{offerId,jdbcType=BIGINT}, #{imgUrl,jdbcType=VARCHAR}, 
+      #{dim,jdbcType=VARCHAR}, #{period,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
+      #{crawlTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.alibaba.model.HotRank">
+    insert into hotrank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="trade != null">
+        trade,
+      </if>
+      <if test="flow != null">
+        flow,
+      </if>
+      <if test="ratio != null">
+        ratio,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="sameGoodUrl != null">
+        same_good_url,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="comName != null">
+        com_name,
+      </if>
+      <if test="comUrl != null">
+        com_url,
+      </if>
+      <if test="offerId != null">
+        offer_id,
+      </if>
+      <if test="imgUrl != null">
+        img_url,
+      </if>
+      <if test="dim != null">
+        dim,
+      </if>
+      <if test="period != null">
+        period,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="crawlTime != null">
+        crawl_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="trade != null">
+        #{trade,jdbcType=INTEGER},
+      </if>
+      <if test="flow != null">
+        #{flow,jdbcType=INTEGER},
+      </if>
+      <if test="ratio != null">
+        #{ratio,jdbcType=DECIMAL},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="sameGoodUrl != null">
+        #{sameGoodUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="comName != null">
+        #{comName,jdbcType=VARCHAR},
+      </if>
+      <if test="comUrl != null">
+        #{comUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null">
+        #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="imgUrl != null">
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dim != null">
+        #{dim,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null">
+        #{period,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="crawlTime != null">
+        #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.alibaba.model.HotRank">
+    update hotrank
+    <set>
+      <if test="trade != null">
+        trade = #{trade,jdbcType=INTEGER},
+      </if>
+      <if test="flow != null">
+        flow = #{flow,jdbcType=INTEGER},
+      </if>
+      <if test="ratio != null">
+        ratio = #{ratio,jdbcType=DECIMAL},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="sameGoodUrl != null">
+        same_good_url = #{sameGoodUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="comName != null">
+        com_name = #{comName,jdbcType=VARCHAR},
+      </if>
+      <if test="comUrl != null">
+        com_url = #{comUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null">
+        offer_id = #{offerId,jdbcType=BIGINT},
+      </if>
+      <if test="imgUrl != null">
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dim != null">
+        dim = #{dim,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null">
+        period = #{period,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="crawlTime != null">
+        crawl_time = #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.alibaba.model.HotRank">
+    update hotrank
+    set trade = #{trade,jdbcType=INTEGER},
+      flow = #{flow,jdbcType=INTEGER},
+      ratio = #{ratio,jdbcType=DECIMAL},
+      count = #{count,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      same_good_url = #{sameGoodUrl,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      com_name = #{comName,jdbcType=VARCHAR},
+      com_url = #{comUrl,jdbcType=VARCHAR},
+      offer_id = #{offerId,jdbcType=BIGINT},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      dim = #{dim,jdbcType=VARCHAR},
+      period = #{period,jdbcType=VARCHAR},
+      cat_id = #{catId,jdbcType=INTEGER},
+      crawl_time = #{crawlTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

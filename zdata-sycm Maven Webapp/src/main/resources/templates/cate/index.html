@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/cate/index.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md2">
+				<div class="layui-card">
+					<div class="layui-card-header">分类</div>
+					<div class="layui-card-body" id="cateTreeDiv" style="overflow:auto">
+						<div id="cateTree" class="ztree" style="margin-left: 15px;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md10">
+				<div class="layui-card">
+					<div class="layui-card-body" id="resultDiv" style="overflow: auto;">
+						<div class="layui-tab layui-tab-brief" lay-filter="content">
+							<ul class="layui-tab-title">
+								<li lay-id="0" class="layui-this">高交易排行榜</li>
+								<li lay-id="1">连续上升三天（高交易）</li>
+								<li lay-id="2">高流量排行榜</li>
+								<li lay-id="3">连续上升三天（高流量）</li>
+								<li lay-id="4">高意向排行榜</li>
+								<li lay-id="5">连续上升三天（高意向）</li>
+								<li lay-id="6">连续上升三天（交集）</li>
+							</ul>
+							<div class="layui-tab-content">
+								<div class="layui-tab-item layui-show">
+									<div class="searchHotSale" style="margin-top: 10px;">
+										<form action="" id="searchHotSale">
+											宝贝ID：
+											<div class="layui-inline">
+												<input class="layui-input" name="itemId" id="itemId"
+													 autocomplete="off">
+											</div>
+											宝贝标题：
+											<div class="layui-inline">
+												<input class="layui-input" name="itemTitle"
+													 autocomplete="off">
+											</div>
+											时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTimeSale"
+													 autocomplete="off">
+											</div>
+											<button class="layui-btn" data-type="reload" type="button">搜索</button>
+										</form>
+									</div>
+									<script type="text/html" id="hotSaleToolbar">
+  										<div class="layui-btn-container">
+    										<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜图</button>
+  										</div>
+									</script>
+									<table class="layui-hide" id="hotSaleList" lay-filter="hotSaleTable"></table>
+								</div>
+								<div class="layui-tab-item">
+									<div class="searchHot" style="margin-top: 10px;">
+										<form action="" id="searchHot">
+											查询时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTime"
+													autocomplete="off">
+											</div>
+											<button class="layui-btn search" data-type="reload" type="button">搜索</button>
+											<button class="layui-btn layui-btn-danger" data-type="delCache" type="button">清除缓存</button>
+										</form>
+									</div>
+									<div class="layui-tab layui-tab-card" style="margin-top: 10px;">
+										<ul class="layui-tab-title">
+											<li class="layui-this">数据图表</li>
+											<li>数据列表</li>
+										</ul>
+										<div class="layui-tab-content" style="padding:10px 10px 10px 10px;">
+											<div class="layui-tab-item layui-show" id="Saleline" style="overflow:auto">
+											</div>
+											<div class="layui-tab-item">
+												<table class="layui-hide" id="hotList" lay-filter="hotTable"></table>
+												<script type="text/html" id="hotToolbar">
+  													<div class="layui-btn-container">
+    													<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜图</button>
+  													</div>
+												</script>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="layui-tab-item">
+									<div class="searchHotSearch" style="margin-top: 10px;">
+										<form action="" id="searchHotSearch">
+											宝贝ID：
+											<div class="layui-inline">
+												<input class="layui-input" name="itemId"
+													 autocomplete="off">
+											</div>
+											宝贝标题：
+											<div class="layui-inline">
+												<input class="layui-input" name="itemTitle"
+													 autocomplete="off">
+											</div>
+											时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTimeSearch"
+													 autocomplete="off">
+											</div>
+											<button class="layui-btn" data-type="reload" type="button">搜索</button>
+										</form>
+									</div>
+									<script type="text/html" id="hotSearchToolbar">
+  										<div class="layui-btn-container">
+    										<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜图</button>
+  										</div>
+									</script>
+									<table class="layui-hide" id="hotSearchList" lay-filter="hotSearchTable"></table>
+								</div>
+								<div class="layui-tab-item">
+									<div class="searchHotLl" style="margin-top: 10px;">
+										<form action="" id="searchHotLl">
+											查询时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTimeLl"
+													 autocomplete="off">
+											</div>
+											<button class="layui-btn search" data-type="reload" type="button">搜索</button>
+											<button class="layui-btn layui-btn-danger" data-type="delCache" type="button">清除缓存</button>
+										</form>
+									</div>
+									<div class="layui-tab layui-tab-card" style="margin-top: 10px;">
+										<ul class="layui-tab-title">
+											<li class="layui-this">数据图表</li>
+											<li>数据列表</li>
+										</ul>
+										<div class="layui-tab-content" style="padding:10px 10px 10px 10px;">
+											<div class="layui-tab-item layui-show" id="Searchline" style="overflow:auto">
+											</div>
+											<div class="layui-tab-item">
+												<script type="text/html" id="hotLlToolbar">
+  													<div class="layui-btn-container">
+    													<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜图</button>
+  													</div>
+												</script>
+												<table class="layui-hide" id="hotLlList" lay-filter="hotLlTable"></table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="layui-tab-item">
+									<div class="searchHotPurpose" style="margin-top: 10px;">
+										<form action="" id="searchHotPurpose">
+											宝贝ID：
+											<div class="layui-inline">
+												<input class="layui-input" name="itemId" id="itemIdYx"
+													 autocomplete="off">
+											</div>
+											宝贝标题：
+											<div class="layui-inline">
+												<input class="layui-input" name="itemTitle"
+													 autocomplete="off">
+											</div>
+											时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTimePurpose"
+													 autocomplete="off">
+											</div>
+											<button class="layui-btn" data-type="reload" type="button">搜索</button>
+										</form>
+									</div>
+									<script type="text/html" id="hotPurposeToolbar">
+  										<div class="layui-btn-container">
+    										<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜图</button>
+  										</div>
+									</script>
+									<table class="layui-hide" id="hotPurposeList" lay-filter="hotPurposeTable"></table>
+								</div>
+								<div class="layui-tab-item">
+									<div class="searchHotYx" style="margin-top: 10px;">
+										<form action="" id="searchHotYx">
+											查询时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTimeYx"
+													 autocomplete="off">
+											</div>
+											<button class="layui-btn search" data-type="reload" type="button">搜索</button>
+											<button class="layui-btn layui-btn-danger" data-type="delCache" type="button">清除缓存</button>
+										</form>
+									</div>
+									<div class="layui-tab layui-tab-card" style="margin-top: 10px;">
+										<ul class="layui-tab-title">
+											<li class="layui-this">数据图表</li>
+											<li>数据列表</li>
+										</ul>
+										<div class="layui-tab-content" style="padding:10px 10px 10px 10px;">
+											<div class="layui-tab-item layui-show" id="Purposeline" style="overflow:auto">
+											</div>
+											<div class="layui-tab-item">
+												<script type="text/html" id="hotYxToolbar">
+  													<div class="layui-btn-container">
+    													<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜图</button>
+  													</div>
+												</script>
+												<table class="layui-hide" id="hotYxList" lay-filter="hotYxTable"></table>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								<div class="layui-tab-item">
+									<div class="searchJoin" style="margin-top: 10px;">
+										<form action="" id="searchJoin">
+											查询时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTimeJoin"
+													 autocomplete="off">
+											</div>
+											<button class="layui-btn" data-type="reload" type="button">搜索</button>
+										</form>
+									</div>
+									<script type="text/html" id="joinToolbar">
+  										<div class="layui-btn-container">
+    										<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜图</button>
+  										</div>
+									</script>
+									<table class="layui-hide" id="joinList" lay-filter="joinTable"></table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/hotGoods/info.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-card">
+			<div class="layui-card-body" style="overflow:auto">
+				<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+					<ul class="layui-tab-title">
+						<li class="layui-this">宝贝信息</li>
+						<li>类目热销排行榜</li>
+						<li>类目拼团飙升榜</li>
+						<li>(热销)相似数据</li>
+						<li>(拼团)相似数据</li>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show">
+							<div class="layui-row">
+								<div class="layui-col-md12">
+									<table class="layui-hide" id="hotList" lay-filter="hotTable"></table>
+									<script type="text/html" id="hotToolbar">
+									</script>
+								</div>
+							</div>
+							<div class="layui-row">
+								<div class="layui-col-md4">
+									<div id="main" style="width: 98%;height:380px;"></div>
+								</div>
+								<div class="layui-col-md4">
+									<div id="main2" style="width: 98%;height:380px;"></div>
+								</div>
+								<div class="layui-col-md4">
+									<div id="main3" style="width: 98%;height:380px;"></div>
+								</div>
+							</div>
+						</div>
+						<div class="layui-tab-item">
+							<div class="searchGoods" style="padding:10px 0px 0px 0px;">
+								<form action="" id="searchGoods">
+									名称：
+									<div class="layui-inline">
+										<input class="layui-input" name="goodsName"
+											autocomplete="off">
+									</div>
+									时间：
+									<div class="layui-inline">
+										<input class="layui-input" name="updateDate"
+											id="updateDateGoods" autocomplete="off">
+									</div>
+									<button class="layui-btn" data-type="reload"
+										type="button">搜索</button>
+								</form>
+							</div>
+							<table class="layui-hide" id="hotGoodsList" lay-filter="hotGoodsTable"></table>
+						</div>
+						<div class="layui-tab-item">
+							<div class="searchSurge" style="padding:10px 0px 0px 0px;">
+								<form action="" id="searchSurge">
+									名称：
+									<div class="layui-inline">
+										<input class="layui-input" name="goodsName"
+											autocomplete="off">
+									</div>
+									时间：
+									<div class="layui-inline">
+										<input class="layui-input" name="updateDate"
+											id="updateDateSurge" autocomplete="off">
+									</div>
+									<button class="layui-btn" data-type="reload"
+										type="button">搜索</button>
+								</form>
+							</div>
+							<table class="layui-hide" id="hotSurgeList" lay-filter="hotSurgeTable"></table>
+						</div>
+						<div class="layui-tab-item">
+							<div class="searchRelated" style="padding:10px 0px 0px 0px;">
+								<form action="" id="searchRelated">
+									时间：
+									<div class="layui-inline">
+										<input class="layui-input" name="updateDate"
+											id="updateDateRelated" autocomplete="off">
+									</div>
+									<button class="layui-btn" data-type="reload"
+										type="button">搜索</button>
+								</form>
+							</div>
+							<table class="layui-hide" id="relatedList" lay-filter="relatedTable"></table>
+						</div>
+						<div class="layui-tab-item">
+							<div class="searchRelatedGroup" style="padding:10px 0px 0px 0px;">
+								<form action="" id="searchRelatedGroup">
+									时间：
+									<div class="layui-inline">
+										<input class="layui-input" name="updateDate"
+											id="updateDateRelatedGroup" autocomplete="off">
+									</div>
+									<button class="layui-btn" data-type="reload"
+										type="button">搜索</button>
+								</form>
+							</div>
+							<table class="layui-hide" id="relatedGroupList" lay-filter="relatedGroupTable"></table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.sycm.dao.SearchWordHotMapper">
+  <cache></cache>
+  <resultMap id="BaseResultMap" type="com.zdata.sycm.model.SearchWordHot">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="click_hits" jdbcType="VARCHAR" property="clickHits" />
+    <result column="click_rate" jdbcType="VARCHAR" property="clickRate" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="p4p_ref_price" jdbcType="VARCHAR" property="p4pRefPrice" />
+    <result column="pay_rate" jdbcType="VARCHAR" property="payRate" />
+    <result column="se_ipv_uv_hits" jdbcType="VARCHAR" property="seIpvUvHits" />
+    <result column="search_word" jdbcType="VARCHAR" property="searchWord" />
+    <result column="tm_click_rate" jdbcType="VARCHAR" property="tmClickRate" />
+    <result column="update_time" jdbcType="DATE" property="updateTime" />
+    <result column="crawl_time" jdbcType="TIMESTAMP" property="crawlTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cat_id, click_hits, click_rate, rank, order_num, p4p_ref_price, pay_rate, se_ipv_uv_hits, 
+    search_word, tm_click_rate, update_time, crawl_time
+  </sql>
+  <select id="findNew" parameterType="com.zdata.sycm.vo.search.SearchWordHotSearchVo" resultMap="BaseResultMap">
+  	select 
+    h.*,c.cat_name as cat_name
+    from searchwordhot h
+    left join cate c on  h.cat_id=c.cat_id
+    where h.cat_id = #{catId,jdbcType=INTEGER}
+    and h.update_time = #{updateTime,jdbcType=DATE}
+    and search_word not in (
+    	select search_word from searchwordhot where cat_id = #{catId,jdbcType=INTEGER}
+    	and update_time <![CDATA[<=]]> DATE_SUB(#{updateTime,jdbcType=DATE}, INTERVAL 1 DAY)
+    )
+    order by CONVERT(h.se_ipv_uv_hits, SIGNED) desc
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from searchwordhot
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from searchwordhot
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.sycm.model.SearchWordHot">
+    insert into searchwordhot (id, cat_id, click_hits, 
+      click_rate, rank, order_num, 
+      p4p_ref_price, pay_rate, se_ipv_uv_hits, 
+      search_word, tm_click_rate, update_time, 
+      crawl_time)
+    values (#{id,jdbcType=INTEGER}, #{catId,jdbcType=INTEGER}, #{clickHits,jdbcType=VARCHAR}, 
+      #{clickRate,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, #{orderNum,jdbcType=INTEGER}, 
+      #{p4pRefPrice,jdbcType=VARCHAR}, #{payRate,jdbcType=VARCHAR}, #{seIpvUvHits,jdbcType=VARCHAR}, 
+      #{searchWord,jdbcType=VARCHAR}, #{tmClickRate,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE}, 
+      #{crawlTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.sycm.model.SearchWordHot">
+    insert into searchwordhot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="clickHits != null">
+        click_hits,
+      </if>
+      <if test="clickRate != null">
+        click_rate,
+      </if>
+      <if test="rank != null">
+        rank,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="p4pRefPrice != null">
+        p4p_ref_price,
+      </if>
+      <if test="payRate != null">
+        pay_rate,
+      </if>
+      <if test="seIpvUvHits != null">
+        se_ipv_uv_hits,
+      </if>
+      <if test="searchWord != null">
+        search_word,
+      </if>
+      <if test="tmClickRate != null">
+        tm_click_rate,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="crawlTime != null">
+        crawl_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="clickHits != null">
+        #{clickHits,jdbcType=VARCHAR},
+      </if>
+      <if test="clickRate != null">
+        #{clickRate,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="p4pRefPrice != null">
+        #{p4pRefPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="payRate != null">
+        #{payRate,jdbcType=VARCHAR},
+      </if>
+      <if test="seIpvUvHits != null">
+        #{seIpvUvHits,jdbcType=VARCHAR},
+      </if>
+      <if test="searchWord != null">
+        #{searchWord,jdbcType=VARCHAR},
+      </if>
+      <if test="tmClickRate != null">
+        #{tmClickRate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="crawlTime != null">
+        #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.sycm.model.SearchWordHot">
+    update searchwordhot
+    <set>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="clickHits != null">
+        click_hits = #{clickHits,jdbcType=VARCHAR},
+      </if>
+      <if test="clickRate != null">
+        click_rate = #{clickRate,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        rank = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="p4pRefPrice != null">
+        p4p_ref_price = #{p4pRefPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="payRate != null">
+        pay_rate = #{payRate,jdbcType=VARCHAR},
+      </if>
+      <if test="seIpvUvHits != null">
+        se_ipv_uv_hits = #{seIpvUvHits,jdbcType=VARCHAR},
+      </if>
+      <if test="searchWord != null">
+        search_word = #{searchWord,jdbcType=VARCHAR},
+      </if>
+      <if test="tmClickRate != null">
+        tm_click_rate = #{tmClickRate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="crawlTime != null">
+        crawl_time = #{crawlTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.sycm.model.SearchWordHot">
+    update searchwordhot
+    set cat_id = #{catId,jdbcType=INTEGER},
+      click_hits = #{clickHits,jdbcType=VARCHAR},
+      click_rate = #{clickRate,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=INTEGER},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      p4p_ref_price = #{p4pRefPrice,jdbcType=VARCHAR},
+      pay_rate = #{payRate,jdbcType=VARCHAR},
+      se_ipv_uv_hits = #{seIpvUvHits,jdbcType=VARCHAR},
+      search_word = #{searchWord,jdbcType=VARCHAR},
+      tm_click_rate = #{tmClickRate,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=DATE},
+      crawl_time = #{crawlTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

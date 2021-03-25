@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/cate/main.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md2">
+				<div class="layui-card">
+					<div class="layui-card-header">分类</div>
+					<div class="layui-card-body" id="cateTreeDiv" style="overflow:auto">
+						<div id="cateTree" class="ztree" style="margin-left: 15px;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md10">
+				<div class="layui-card">
+					<div class="layui-card-body" id="resultDiv" style="overflow: auto;">
+						<div class="layui-tab layui-tab-brief" lay-filter="content">
+							<ul class="layui-tab-title">
+								<li lay-id="0" class="layui-this">搜索词 （热搜榜）</li>
+								<li lay-id="1">搜索词 （飙升榜）</li>
+							</ul>
+							<div class="layui-tab-content">
+								<div class="layui-tab-item layui-show">
+									<div class="searchHot" style="margin-top: 10px;">
+										<form action="" id="searchHot">
+											查询时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTime"
+													autocomplete="off">
+											</div>
+											<button class="layui-btn" data-type="reload" type="button">搜索</button>
+										</form>
+									</div>
+									<script type="text/html" id="hotToolbar">
+  										<div class="layui-btn-container">
+    										<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜索</button>
+											<button class="layui-btn layui-btn-sm" lay-event="ddSearch">拼多多搜索</button>
+											<button class="layui-btn layui-btn-sm" lay-event="qsSearch">拼多多趋势</button>  										
+										</div>
+									</script>									
+									<table class="layui-hide" id="hotList" lay-filter="hotTable"></table>
+								</div>
+								<div class="layui-tab-item">
+									<div class="searchSoar" style="margin-top: 10px;">
+										<form action="" id="searchSoar">
+											查询时间：
+											<div class="layui-inline">
+												<input class="layui-input" name="updateTime" id="updateTimeSoar"
+													autocomplete="off">
+											</div>
+											<button class="layui-btn" data-type="reload" type="button">搜索</button>
+										</form>
+									</div>
+									<script type="text/html" id="soarToolbar">
+  										<div class="layui-btn-container">
+    										<button class="layui-btn layui-btn-sm" lay-event="aliSearch">阿里搜索</button>
+											<button class="layui-btn layui-btn-sm" lay-event="ddSearch">拼多多搜索</button>
+											<button class="layui-btn layui-btn-sm" lay-event="qsSearch">拼多多趋势</button>
+  										</div>
+									</script>									
+									<table class="layui-hide" id="soarList" lay-filter="soarTable"></table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

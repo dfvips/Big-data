@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/hotRise/info.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-card">
+				<div class="layui-card-body" style="overflow:auto">
+					<table class="layui-hide" id="table" lay-filter="hotTable"
+						style="width: 100%;"></table>
+					<script type="text/html" id="Toolbar">
+						</script>
+				</div>
+			</div>
+		</div>
+		<div class="layui-row layui-col-space10">
+			<div class="layui-card">
+				<div class="layui-row">
+					<div class="layui-col-md6">
+						<div id="main" style="width: 98%;height:300px;"></div>
+					</div>
+					<div class="layui-col-md6">
+						<div id="main2" style="width: 98%;height:300px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.yundong.dao.HotCollectMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.yundong.model.HotCollect">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="hot_rise_id" jdbcType="INTEGER" property="hotRiseId" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="collect_date_time" jdbcType="TIMESTAMP" property="collectDateTime" />
+    <result column="publish_date" jdbcType="DATE" property="publishDate" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <association property="hotRise" javaType="com.zdata.yundong.model.HotRise">
+    	<id column="id" jdbcType="INTEGER" property="id" />
+	    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+	    <result column="hot_goods_id" jdbcType="INTEGER" property="hotGoodsId" />
+	    <result column="visitor_num" jdbcType="INTEGER" property="visitorNum" />
+	    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+	    <result column="rise_date" jdbcType="DATE" property="riseDate" />
+	    <result column="translation" jdbcType="VARCHAR" property="translation" />
+	    <result column="visitor_percent" jdbcType="VARCHAR" property="visitorPercent" />
+	    <result column="order_percent" jdbcType="VARCHAR" property="orderPercent" />
+	    <result column="tag" jdbcType="VARCHAR" property="tag" />
+	    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+	    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, hot_rise_id, state, collect_date_time, publish_date, url
+  </sql>
+  <select id="findPage" parameterType="com.zdata.yundong.model.HotCollect" resultMap="BaseResultMap">
+  	select hc.*,hr.*
+    from hotcollect as hc
+    left join hotrise as hr on hc.hot_rise_id = hr.id
+    where 1=1 
+    <include refid="page_search_sql"/>
+  </select>
+  <sql id="page_search_sql">
+  	<if test="state != null and state !=''">
+  		and hc.state = #{state,jdbcType=INTEGER}
+  	</if>
+  </sql>
+  <select id="selectByHotRiseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotcollect
+    where hot_rise_id = #{hotRiseId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotcollect
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hotcollect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.yundong.model.HotCollect">
+    insert into hotcollect (id, hot_rise_id, state, 
+      collect_date_time, publish_date, url
+      )
+    values (#{id,jdbcType=INTEGER}, #{hotRiseId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{collectDateTime,jdbcType=TIMESTAMP}, #{publishDate,jdbcType=DATE}, #{url,jdbcType=VARCHAR}
+      )
+  </insert>
+   <insert id="insertSelective" parameterType="com.zdata.yundong.model.HotCollect">
+    insert into hotcollect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hotRiseId != null">
+        hot_rise_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="collectDateTime != null">
+        collect_date_time,
+      </if>
+      <if test="publishDate != null">
+        publish_date,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="hotRiseId != null">
+        #{hotRiseId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="collectDateTime != null">
+        #{collectDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishDate != null">
+        #{publishDate,jdbcType=DATE},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.yundong.model.HotCollect">
+    update hotcollect
+    <set>
+      <if test="hotRiseId != null">
+        hot_rise_id = #{hotRiseId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="collectDateTime != null">
+        collect_date_time = #{collectDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishDate != null">
+        publish_date = #{publishDate,jdbcType=DATE},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.yundong.model.HotCollect">
+    update hotcollect
+    set hot_rise_id = #{hotRiseId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      collect_date_time = #{collectDateTime,jdbcType=TIMESTAMP},
+      publish_date = #{publishDate,jdbcType=DATE},
+      url = #{url,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

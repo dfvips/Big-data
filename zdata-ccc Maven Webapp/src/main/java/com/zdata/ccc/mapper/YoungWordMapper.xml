@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.ccc.dao.YoungWordMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.ccc.model.YoungWord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="word" jdbcType="VARCHAR" property="word" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="young_value" jdbcType="VARCHAR" property="youngValue" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <collection property="youngTrends" ofType="com.zdata.ccc.model.YoungTrend">
+	    <result column="word_id" jdbcType="INTEGER" property="wordId" />
+	    <result column="word" jdbcType="VARCHAR" property="word" />
+	    <result column="pv" jdbcType="INTEGER" property="pv" />
+	    <result column="click_num" jdbcType="INTEGER" property="clickNum" />
+	    <result column="ctr" jdbcType="VARCHAR" property="ctr" />
+	    <result column="cvr" jdbcType="VARCHAR" property="cvr" />
+	    <result column="compete_value" jdbcType="VARCHAR" property="competeValue" />
+	    <result column="impr_avg_bid" jdbcType="VARCHAR" property="imprAvgBid" />
+	    <result column="update_date" jdbcType="DATE" property="updateDate" />
+    </collection>
+  </resultMap>
+  <select id="findByState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select yw.*,yt.*
+    from youngword yw
+    left join youngtrend yt on yw.id=yt.word_id
+    where 1=1 and yw.state = #{state,jdbcType=INTEGER}
+  </select>
+  <sql id="Base_Column_List">
+    id, word, state, young_value, cat_id
+  </sql>
+  <sql id="base_search_sql">
+  	<if test="state != null and state !=''">
+	  	and yw.state = #{state,jdbcType=INTEGER}
+	</if>
+	<if test="catId != null and catId !=''">
+	  	and yw.cat_id = #{catId,jdbcType=INTEGER}
+	</if>
+  </sql>
+  <delete id="deleteByCatId" parameterType="java.lang.Integer">
+  	delete from youngword
+    where state = 0 and cat_id = #{catId,jdbcType=INTEGER}
+  </delete>
+  <select id="find" parameterType="com.zdata.ccc.model.YoungWord" resultMap="BaseResultMap">
+  	select yw.*,gc.cat_name as cat_name
+    from youngword yw
+    left join goodscate gc on yw.cat_id=gc.cat_id
+    where 1=1 
+    <include refid="base_search_sql"/>
+  </select>
+  <select id="findCount" parameterType="com.zdata.ccc.model.YoungWord" resultType="java.lang.Integer">
+  	select count()
+    from youngword yw
+    left join youngtrend yt on yw.id=yt.word_id
+    where 1=1 
+    <include refid="base_search_sql"/>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from youngword
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from youngword
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.ccc.model.YoungWord">
+    insert into youngword (id, word, state, 
+      young_value, cat_id)
+    values (#{id,jdbcType=INTEGER}, #{word,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{youngValue,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.ccc.model.YoungWord">
+    insert into youngword
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="word != null">
+        word,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="youngValue != null">
+        young_value,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="word != null">
+        #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="youngValue != null">
+        #{youngValue,jdbcType=VARCHAR},
+      </if>
+       <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.ccc.model.YoungWord">
+    update youngword
+    <set>
+      <if test="word != null">
+        word = #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="youngValue != null">
+        young_value = #{youngValue,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.ccc.model.YoungWord">
+    update youngword
+    set word = #{word,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      young_value = #{youngValue,jdbcType=VARCHAR},
+      cat_id = #{catId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

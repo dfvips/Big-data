@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.alibaba.dao.HotRiseMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.alibaba.model.HotRise">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="hot_rank_id" jdbcType="INTEGER" property="hotRankId" />
+    <result column="rise_date" jdbcType="DATE" property="riseDate" />
+    <association property="hotRank" javaType="com.zdata.alibaba.model.HotRank">
+    	<result column="trade" jdbcType="INTEGER" property="trade" />
+	    <result column="flow" jdbcType="INTEGER" property="flow" />
+	    <result column="ratio" jdbcType="DECIMAL" property="ratio" />
+	    <result column="count" jdbcType="INTEGER" property="count" />
+	    <result column="price" jdbcType="DECIMAL" property="price" />
+	    <result column="same_good_url" jdbcType="VARCHAR" property="sameGoodUrl" />
+	    <result column="title" jdbcType="VARCHAR" property="title" />
+	    <result column="com_name" jdbcType="VARCHAR" property="comName" />
+	    <result column="com_url" jdbcType="VARCHAR" property="comUrl" />
+	    <result column="offer_id" jdbcType="BIGINT" property="offerId" />
+	    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+	    <result column="dim" jdbcType="VARCHAR" property="dim" />
+	    <result column="period" jdbcType="VARCHAR" property="period" />
+	    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+	    <result column="crawl_time" jdbcType="TIMESTAMP" property="crawlTime" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, hot_rank_id, rise_date
+  </sql>
+  <sql id="base_search_sql">
+  	<if test="catId != null and catId !=''">
+	  	and hr.cat_id = #{catId,jdbcType=INTEGER}
+	</if>
+	<if test="title != null and title !=''">
+	  	and hr.title like '%${title}%'
+	</if>
+	<if test="riseDate != null and riseDate !=''">
+		and DATE_FORMAT(hs.rise_date, '%Y-%m-%d') = #{riseDate}
+	</if>
+  </sql>
+  <select id="find" parameterType="com.zdata.alibaba.vo.search.HotRiseSearchVo" resultMap="BaseResultMap">
+  	select hs.*,hr.*
+     from hotrise hs
+     left join hotrank hr on hs.hot_rank_id=hr.id
+     where 1=1 
+     <include refid="base_search_sql" />
+  </select>
+  <select id="selectByHotRankId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotrise
+    where hot_rank_id = #{hotRankId,jdbcType=INTEGER}  	
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotrise
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hotrise
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.alibaba.model.HotRise">
+    insert into hotrise (id, hot_rank_id, rise_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{hotRankId,jdbcType=INTEGER}, #{riseDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.alibaba.model.HotRise">
+    insert into hotrise
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hotRankId != null">
+        hot_rank_id,
+      </if>
+      <if test="riseDate != null">
+        rise_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="hotRankId != null">
+        #{hotRankId,jdbcType=INTEGER},
+      </if>
+      <if test="riseDate != null">
+        #{riseDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.alibaba.model.HotRise">
+    update hotrise
+    <set>
+      <if test="hotRankId != null">
+        hot_rank_id = #{hotRankId,jdbcType=INTEGER},
+      </if>
+      <if test="riseDate != null">
+        rise_date = #{riseDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.alibaba.model.HotRise">
+    update hotrise
+    set hot_rank_id = #{hotRankId,jdbcType=INTEGER},
+      rise_date = #{riseDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

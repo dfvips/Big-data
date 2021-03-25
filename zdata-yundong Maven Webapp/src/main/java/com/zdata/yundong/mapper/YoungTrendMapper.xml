@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.yundong.dao.YoungTrendMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.yundong.model.YoungTrend">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="word_id" jdbcType="INTEGER" property="wordId" />
+    <result column="word" jdbcType="VARCHAR" property="word" />
+    <result column="pv" jdbcType="INTEGER" property="pv" />
+    <result column="click_num" jdbcType="INTEGER" property="clickNum" />
+    <result column="ctr" jdbcType="VARCHAR" property="ctr" />
+    <result column="cvr" jdbcType="VARCHAR" property="cvr" />
+    <result column="compete_value" jdbcType="VARCHAR" property="competeValue" />
+    <result column="impr_avg_bid" jdbcType="VARCHAR" property="imprAvgBid" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, word_id, word, pv, click_num, ctr, cvr, compete_value, impr_avg_bid, update_date
+  </sql>
+  <delete id="deleteByCatId" parameterType="java.lang.Integer">
+  	delete from youngtrend
+    where word_id in (
+    	select id from youngword where cat_id = #{catId,jdbcType=INTEGER} and state=0
+    )
+  </delete>
+  <delete id="deleteByWordId" parameterType="java.lang.Integer">
+  	delete from youngtrend
+    where word_id = #{wordId,jdbcType=INTEGER}
+  </delete>
+  <select id="findByWordId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from youngtrend
+    where word_id = #{wordId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from youngtrend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from youngtrend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.yundong.model.YoungTrend">
+    insert into youngtrend (id, word_id, word, 
+      pv, click_num, ctr, 
+      cvr, compete_value, impr_avg_bid, 
+      update_date)
+    values (#{id,jdbcType=INTEGER}, #{wordId,jdbcType=INTEGER}, #{word,jdbcType=VARCHAR}, 
+      #{pv,jdbcType=INTEGER}, #{clickNum,jdbcType=INTEGER}, #{ctr,jdbcType=VARCHAR}, 
+      #{cvr,jdbcType=VARCHAR}, #{competeValue,jdbcType=VARCHAR}, #{imprAvgBid,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.yundong.model.YoungTrend">
+    insert into youngtrend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="wordId != null">
+        word_id,
+      </if>
+      <if test="word != null">
+        word,
+      </if>
+      <if test="pv != null">
+        pv,
+      </if>
+      <if test="clickNum != null">
+        click_num,
+      </if>
+      <if test="ctr != null">
+        ctr,
+      </if>
+      <if test="cvr != null">
+        cvr,
+      </if>
+      <if test="competeValue != null">
+        compete_value,
+      </if>
+      <if test="imprAvgBid != null">
+        impr_avg_bid,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wordId != null">
+        #{wordId,jdbcType=INTEGER},
+      </if>
+      <if test="word != null">
+        #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="pv != null">
+        #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="clickNum != null">
+        #{clickNum,jdbcType=INTEGER},
+      </if>
+      <if test="ctr != null">
+        #{ctr,jdbcType=VARCHAR},
+      </if>
+      <if test="cvr != null">
+        #{cvr,jdbcType=VARCHAR},
+      </if>
+      <if test="competeValue != null">
+        #{competeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="imprAvgBid != null">
+        #{imprAvgBid,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.yundong.model.YoungTrend">
+    update youngtrend
+    <set>
+      <if test="wordId != null">
+        word_id = #{wordId,jdbcType=INTEGER},
+      </if>
+      <if test="word != null">
+        word = #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="pv != null">
+        pv = #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="clickNum != null">
+        click_num = #{clickNum,jdbcType=INTEGER},
+      </if>
+      <if test="ctr != null">
+        ctr = #{ctr,jdbcType=VARCHAR},
+      </if>
+      <if test="cvr != null">
+        cvr = #{cvr,jdbcType=VARCHAR},
+      </if>
+      <if test="competeValue != null">
+        compete_value = #{competeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="imprAvgBid != null">
+        impr_avg_bid = #{imprAvgBid,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.yundong.model.YoungTrend">
+    update youngtrend
+    set word_id = #{wordId,jdbcType=INTEGER},
+      word = #{word,jdbcType=VARCHAR},
+      pv = #{pv,jdbcType=INTEGER},
+      click_num = #{clickNum,jdbcType=INTEGER},
+      ctr = #{ctr,jdbcType=VARCHAR},
+      cvr = #{cvr,jdbcType=VARCHAR},
+      compete_value = #{competeValue,jdbcType=VARCHAR},
+      impr_avg_bid = #{imprAvgBid,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

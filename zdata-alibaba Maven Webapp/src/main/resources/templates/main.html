@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>系统后台</title>
+<link th:href="@{/layui/css/layui.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/layui/css/layui-theme-custom.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/zTree_v3/css/metroStyle/metroStyle.css}" rel="stylesheet" type="text/css">
+<script th:src="@{/layui/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/zTree_v3/js/jquery.ztree.all.js}"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/common/common.js}"></script>
+<script th:src="@{/echarts/echarts.min.js}"></script>
+<script th:src="@{/echarts/macarons.js}"></script>
+<script th:inline="javascript">
+     /*<![CDATA[*/
+     var context = /*[[@{/}]]*/;
+     /*]]>*/
+</script>
+</head>
+<body class="layui-bg-gray">
+	<div class="layui-fluid">
+		<div class="layui-row">
+			<div class="layui-col-md12" style="padding:20px 0px 15px 0px;">
+				<section layout:fragment="content">
+				</section>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

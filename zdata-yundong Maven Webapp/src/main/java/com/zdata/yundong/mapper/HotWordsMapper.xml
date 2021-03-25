@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zdata.yundong.dao.HotWordsMapper">
+  <resultMap id="BaseResultMap" type="com.zdata.yundong.model.HotWords">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pv" jdbcType="INTEGER" property="pv" />
+    <result column="click_num" jdbcType="INTEGER" property="clickNum" />
+    <result column="ctr" jdbcType="VARCHAR" property="ctr" />
+    <result column="cvr" jdbcType="VARCHAR" property="cvr" />
+    <result column="compete_value" jdbcType="INTEGER" property="competeValue" />
+    <result column="impr_avg_bid" jdbcType="VARCHAR" property="imprAvgBid" />
+    <result column="word" jdbcType="VARCHAR" property="word" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+    <result column="word_count" jdbcType="INTEGER" property="wordCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pv, click_num, ctr, cvr, compete_value, impr_avg_bid, word, cat_id, cat_name, 
+    update_date
+  </sql>
+  <select id="findYoungByCatId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select sum(pv) as pv,sum(click_num) as click_num,cat_id,word from hotwords where 1=1
+    and word not in (
+    	select word from constant where state=0
+    )
+    and word not in (
+    	select word from youngword where cat_id = #{catId,jdbcType=INTEGER}
+    )
+    <if test="catId != null and catId !=''">
+  		and cat_id = #{catId,jdbcType=INTEGER}
+  	</if>
+    group by word order by pv asc
+  </select>
+  <select id="findByCatId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	  select sum(pv) as pv,sum(click_num) as click_num,cat_id,word from hotwords where cat_id = #{catId,jdbcType=INTEGER} group by word order by pv asc
+  </select>
+  <sql id="page_search_sql">
+  	<if test="catId != null and catId !=''">
+  		and cat_id = #{catId,jdbcType=INTEGER}
+  	</if>
+  	<if test="updateDate != null and updateDate !=''">
+  		and update_date = #{updateDate,jdbcType=DATE}
+  	</if>
+  	<if test="word != null and word !=''">
+	  	and word like '%${word}%'
+	</if>
+	<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+        and update_date between #{beginDate} and #{endDate}
+ 	</if>
+  </sql>
+  <sql id="base_search_sql">
+  	<if test="catId != null and catId !=''">
+  		and cat_id = #{catId,jdbcType=INTEGER}
+  	</if>
+  	<if test="updateDate != null and updateDate !=''">
+  		and update_date = #{updateDate,jdbcType=DATE}
+  	</if>
+  	<if test="word != null and word !=''">
+	  	and word = #{word,jdbcType=VARCHAR}
+	</if>
+	<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+        and update_date between #{beginDate} and #{endDate}
+ 	</if>
+  </sql>
+  <select id="findAfter" parameterType="com.zdata.yundong.vo.search.HotWordsSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotwords
+    where 1=1
+    <if test="word != null and word !=''">
+	  	and word = #{word,jdbcType=VARCHAR}
+	</if>
+	<if test="updateDate != null and updateDate !=''">
+		<![CDATA[   and DATE_FORMAT(update_date, '%Y-%m-%d') >  DATE_FORMAT(#{updateDate}, '%Y-%m-%d')   ]]>
+	</if>
+  </select>
+  <select id="findCountByWords" resultMap="BaseResultMap">
+  	select 
+    word,count(1) as word_count
+    from hotwords
+    where word in
+    <foreach collection="words" item="word" index="index" open="(" close=")" separator=",">
+      #{word}
+    </foreach>
+    <if test="updateDate != null and updateDate !=''">
+		<![CDATA[  and DATE_FORMAT(update_date, '%Y-%m-%d') <=  DATE_FORMAT(#{updateDate}, '%Y-%m-%d')   ]]>
+	</if>
+    group by word
+  </select>
+  
+  <select id="findPage" parameterType="com.zdata.yundong.vo.search.HotWordsSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotwords
+    where 1=1
+    <include refid="page_search_sql"/>
+    order by pv desc
+  </select>
+  <select id="selectByDate" parameterType="com.zdata.yundong.vo.search.HotWordsSearchVo" resultMap="BaseResultMap">
+  	select sum(pv) as pv,sum(click_num) as click_num,cat_id,update_date from hotwords where 
+  	cat_id = #{catId,jdbcType=INTEGER} 
+	and update_date = #{updateDate,jdbcType=DATE}
+  </select>
+  <select id="findListByCatId" parameterType="com.zdata.yundong.vo.search.HotWordsSearchVo" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from hotwords
+    where 1=1
+    <include refid="base_search_sql"/>
+  </select>
+  <select id="selectByWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select 
+    <include refid="Base_Column_List" />
+    from hotwords
+    where word = #{word,jdbcType=VARCHAR}
+    and update_date = #{updateDate,jdbcType=DATE}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hotwords
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hotwords
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zdata.yundong.model.HotWords">
+    insert into hotwords (id, pv, click_num, 
+      ctr, cvr, compete_value, 
+      impr_avg_bid, word, cat_id, 
+      cat_name, update_date)
+    values (#{id,jdbcType=INTEGER}, #{pv,jdbcType=INTEGER}, #{clickNum,jdbcType=INTEGER}, 
+      #{ctr,jdbcType=VARCHAR}, #{cvr,jdbcType=VARCHAR}, #{competeValue,jdbcType=INTEGER}, 
+      #{imprAvgBid,jdbcType=VARCHAR}, #{word,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
+      #{catName,jdbcType=VARCHAR}, #{updateDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zdata.yundong.model.HotWords">
+    insert into hotwords
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pv != null">
+        pv,
+      </if>
+      <if test="clickNum != null">
+        click_num,
+      </if>
+      <if test="ctr != null">
+        ctr,
+      </if>
+      <if test="cvr != null">
+        cvr,
+      </if>
+      <if test="competeValue != null">
+        compete_value,
+      </if>
+      <if test="imprAvgBid != null">
+        impr_avg_bid,
+      </if>
+      <if test="word != null">
+        word,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="catName != null">
+        cat_name,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pv != null">
+        #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="clickNum != null">
+        #{clickNum,jdbcType=INTEGER},
+      </if>
+      <if test="ctr != null">
+        #{ctr,jdbcType=VARCHAR},
+      </if>
+      <if test="cvr != null">
+        #{cvr,jdbcType=VARCHAR},
+      </if>
+      <if test="competeValue != null">
+        #{competeValue,jdbcType=INTEGER},
+      </if>
+      <if test="imprAvgBid != null">
+        #{imprAvgBid,jdbcType=VARCHAR},
+      </if>
+      <if test="word != null">
+        #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zdata.yundong.model.HotWords">
+    update hotwords
+    <set>
+      <if test="pv != null">
+        pv = #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="clickNum != null">
+        click_num = #{clickNum,jdbcType=INTEGER},
+      </if>
+      <if test="ctr != null">
+        ctr = #{ctr,jdbcType=VARCHAR},
+      </if>
+      <if test="cvr != null">
+        cvr = #{cvr,jdbcType=VARCHAR},
+      </if>
+      <if test="competeValue != null">
+        compete_value = #{competeValue,jdbcType=INTEGER},
+      </if>
+      <if test="imprAvgBid != null">
+        impr_avg_bid = #{imprAvgBid,jdbcType=VARCHAR},
+      </if>
+      <if test="word != null">
+        word = #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        cat_name = #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zdata.yundong.model.HotWords">
+    update hotwords
+    set pv = #{pv,jdbcType=INTEGER},
+      click_num = #{clickNum,jdbcType=INTEGER},
+      ctr = #{ctr,jdbcType=VARCHAR},
+      cvr = #{cvr,jdbcType=VARCHAR},
+      compete_value = #{competeValue,jdbcType=INTEGER},
+      impr_avg_bid = #{imprAvgBid,jdbcType=VARCHAR},
+      word = #{word,jdbcType=VARCHAR},
+      cat_id = #{catId,jdbcType=INTEGER},
+      cat_name = #{catName,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

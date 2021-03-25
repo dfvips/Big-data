@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{/main}">
+<!-- layout文件路径-->
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script th:src="@{/js/cate/info.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="layui-card">
+			<div class="layui-card-body" style="overflow:auto">
+				<div class="layui-tab layui-tab-brief" lay-filter="content">
+					<ul class="layui-tab-title">
+						<li class="layui-this" lay-id="0">高交易</li>
+						<li lay-id="1">高流量</li>
+						<li lay-id="2">高意向</li>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show">
+							<table class="layui-hide" id="hotSaleList"
+								lay-filter="hotSaleTable"></table>
+							<div class="layui-fluid" id="Saleline">
+							</div>
+						</div>
+						<div class="layui-tab-item">
+							<table class="layui-hide" id="hotSearchList"
+								lay-filter="hotSearchTable"></table>
+							<div class="layui-fluid" id="Searchline">
+							</div>
+						</div>
+						<div class="layui-tab-item">
+							<table class="layui-hide" id="hotPurposeList"
+								lay-filter="hotPurposeTable"></table>
+							<div class="layui-fluid" id="Purposeline">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
